@@ -24,7 +24,7 @@ jobs:
         aws-region: us-east-1
 
     - name: Package Helm chart
-      run: helm package ./helm-chart
+      run: helm package /home/dshri12/shri/GithubActions/helm-chart/
 
     - name: List packaged Helm chart
       run: ls -l *.tgz
