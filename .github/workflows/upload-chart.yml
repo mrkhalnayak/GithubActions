@@ -36,4 +36,5 @@ jobs:
 
       - name: Upload chart to S3
         run: |
-          aws s3 /home/dshri12/shri/GithubActions/helm-chart/*.tgz s3://helm-chart-1997/charts
+          aws s3 cp nginx-ingress-controller-11.3.6.tgz s3://helm-chart-1997/charts
+          aws s3 cp nginx-ingress-controller-11.3.8.tgz s3://helm-chart-1997/charts
