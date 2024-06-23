@@ -16,7 +16,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: helm-chart
-          path: path/to/your/local/helm/chart/*.tgz
+          path: helm-chart/*.tgz
 
       - name: Download Helm chart artifact
         uses: actions/download-artifact@v2
