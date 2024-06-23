@@ -1,4 +1,4 @@
-name: Upload Helm Chart to S3
+name: Deploy Helm Chart
 
 on:
   push:
@@ -6,35 +6,31 @@ on:
       - main
 
 jobs:
-  upload-chart:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Upload Helm chart artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: helm-chart
-          path: helm-chart/*.tgz
+    - name: Set up Helm
+      uses: azure/setup-helm@v1
 
-      - name: Download Helm chart artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: helm-chart
-          path: ./helm-chart
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      - name: Configure AWS credentials
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: <ap-southeast-2>
-        run: |
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          aws configure set region $AWS_DEFAULT_REGION
+    - name: Package Helm chart
+      run: helm package ./helm-chart
 
-      - name: Upload chart to S3
-        run: |
-          aws s3 cp nginx-ingress-controller-11.3.6.tgz s3://helm-chart-1997/charts
-          aws s3 cp nginx-ingress-controller-11.3.8.tgz s3://helm-chart-1997/charts
+    - name: List packaged Helm chart
+      run: ls -l *.tgz
+
+    - name: Upload Helm chart to S3
+      run: |
+        CHART_PACKAGE=$(ls *.tgz)
+        echo "Uploading $CHART_PACKAGE to s3://helm-chart-1997/charts/"
+        aws s3 cp $CHART_PACKAGE s3://helm-chart-1997/charts/
