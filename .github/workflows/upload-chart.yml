@@ -1,4 +1,4 @@
-name: Deploy Helm Chart
+name: Upload Helm Chart
 
 on:
   push:
@@ -6,15 +6,12 @@ on:
       - main
 
 jobs:
-  deploy:
+  upload:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -23,14 +20,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Package Helm chart
-      run: cd /home/dshri12/shri/GithubActions/helm-chart/
-
-    - name: List packaged Helm chart
-      run: ls -l *.tgz
+    - name: List Helm chart packages
+      run: ls -l helm-chart/*.tgz
 
     - name: Upload Helm chart to S3
       run: |
-        CHART_PACKAGE=$(ls *.tgz)
-        echo "Uploading $CHART_PACKAGE to s3://helm-chart-1997/charts/"
-        aws s3 cp $CHART_PACKAGE s3://helm-chart-1997/charts/
+        for file in helm-chart/*.tgz; do
+          echo "Uploading $file to s3://helm-chart-1997/charts/"
+          aws s3 cp "$file" "s3://helm-chart-1997/charts/"
+        done
