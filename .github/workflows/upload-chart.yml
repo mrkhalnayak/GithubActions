@@ -45,7 +45,7 @@ jobs:
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/helm-charts/
-        helm fetch oci://registry-1.docker.io/bitnamicharts/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-charts
+        helm fetch https://kubernetes.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-charts
 
     - name: List contents of chart directory
       run: ls -l /tmp/helm-charts
