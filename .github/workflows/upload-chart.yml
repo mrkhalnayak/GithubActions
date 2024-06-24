@@ -1,10 +1,20 @@
 name: Deploy Helm Chart to S3
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_dispatch:
+    inputs:
+      chart-name:
+        description: 'The name of the Helm chart'
+        required: true
+        default: 'wordpress'
+      chart-version:
+        description: 'The version of the Helm chart'
+        required: true
+        default: '22.4.12'
+      s3-bucket:
+        description: 'The S3 bucket to push the Helm chart to'
+        required: true
+        default: 'helm-chart-bucket-sydney/charts'
 jobs:
   deploy:
     runs-on: ubuntu-latest
