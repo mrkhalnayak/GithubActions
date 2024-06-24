@@ -43,13 +43,6 @@ jobs:
       run: |
         helm registry login -u $HELM_REGISTRY_USERNAME -p $HELM_REGISTRY_PASSWORD https://artifacthub.io/
 
-    - name: Initialize Helm S3 repo with explicit AWS credentials
-      run: |
-        helm s3 init s3://helm-chart-bucket-sydney/charts/ingress-nginx/
-        shell: /usr/bin/bash -e {0}
-        env:
-          HELM_EXPERIMENTAL_OCI: 1
-
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/helm-charts/
@@ -57,6 +50,11 @@ jobs:
    
     - name: List contents of chart directory
       run: ls -l /tmp/helm-charts
+
+    - name: Initialize Helm S3 repo
+      run: |
+        helm repo add bucket-1 s3://helm-chart-bucket-sydney/charts/nginx-ingress
+        helm repo update
 
     - name: Configure AWS credentials (if needed)
       uses: aws-actions/configure-aws-credentials@v1
