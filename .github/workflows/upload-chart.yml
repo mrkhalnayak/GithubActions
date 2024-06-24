@@ -60,7 +60,6 @@ jobs:
 
     - name: Initialize Helm S3 repo
       run: |
-        helm s3 init s3://helm-chart-bucket-sydney/charts/ingress-nginx
         helm repo add bucket-1 s3://helm-chart-bucket-sydney/charts/ingress-nginx
         helm repo update
 
