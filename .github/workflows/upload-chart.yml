@@ -65,7 +65,7 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
-        helm s3 push /tmp/helm-charts/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz s3://${{ inputs.s3-bucket }}/charts/ingress-nginx/ ${{ inputs.chart-name }}
+        helm s3 push /tmp/helm-charts/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz s3://${{ inputs.s3-bucket }}/charts/ingress-nginx/ 
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
