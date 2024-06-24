@@ -14,7 +14,7 @@ on:
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
-        default: 'helm-chart-bucket-sydney/charts'
+        default: 'sydney-bucket'
 jobs:
   deploy:
     runs-on: ubuntu-latest
