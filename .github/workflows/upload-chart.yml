@@ -44,7 +44,7 @@ jobs:
 
     - name: Pull Helm Chart from Registry
       run: |
-        mkdir -p /tmp/helm-charts
+        mkdir -p /tmp/helm-charts/nginx-ingress
         helm fetch oci://registry-1.docker.io/bitnamicharts/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-charts
 
     - name: List contents of chart directory
