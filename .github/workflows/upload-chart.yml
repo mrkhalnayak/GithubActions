@@ -32,10 +32,6 @@ jobs:
       run: |
         helm registry login -u $HELM_REGISTRY_USERNAME -p $HELM_REGISTRY_PASSWORD https://artifacthub.io/
 
-    - name: init the helm repo first
-      run: |
-        helm s3 init s3://helm-chart-bucket-sydney/charts
-
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/helm-charts
