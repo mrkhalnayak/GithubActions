@@ -61,7 +61,7 @@ jobs:
 
     - name: Initialize Helm S3 repo
       run: |
-        helm s3 init s3://helm-chart-bucket-sydney/charts/sonarqube
+        helm s3 init --force s3://helm-chart-bucket-sydney/charts/sonarqube
         helm repo add my-bucket s3://helm-chart-bucket-sydney/charts/sonarqube
         helm repo update
 
