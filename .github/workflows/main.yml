@@ -47,7 +47,7 @@ jobs:
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/helm-chart
-        helm fetch https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-chart/
+        helm pull https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-chart/
    
     - name: List contents of chart directory
       run: ls -l /tmp/helm-chart/
