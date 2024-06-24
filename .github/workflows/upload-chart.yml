@@ -6,11 +6,11 @@ on:
       chart-name:
         description: 'The name of the Helm chart'
         required: true
-        default: 'wordpress'
+        default: 'ingress-nginx'
       chart-version:
         description: 'The version of the Helm chart'
         required: true
-        default: '22.4.14'
+        default: '4.10.1'
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
