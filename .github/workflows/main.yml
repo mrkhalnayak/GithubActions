@@ -49,7 +49,7 @@ jobs:
         helm fetch https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-chart-sonar
    
     - name: List contents of chart directory
-      run: ls -l /tmp/helm-charts
+      run: ls -l /tmp/helm-charts-sonar
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
