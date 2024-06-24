@@ -45,7 +45,7 @@ jobs:
 
     - name: Initialize Helm S3 repo with explicit AWS credentials
       run: |
-        helm s3 init s3://helm-chart-bucket-sydney/charts/ingress-nginx/ --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-access-key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        helm s3 init s3://helm-chart-bucket-sydney/charts/ingress-nginx/
 
     - name: Pull Helm Chart from Registry
       run: |
