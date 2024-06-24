@@ -46,6 +46,9 @@ jobs:
     - name: Initialize Helm S3 repo with explicit AWS credentials
       run: |
         helm s3 init s3://helm-chart-bucket-sydney/charts/ingress-nginx/
+        shell: /usr/bin/bash -e {0}
+        env:
+          HELM_EXPERIMENTAL_OCI: 1
 
     - name: Pull Helm Chart from Registry
       run: |
