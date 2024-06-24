@@ -41,6 +41,10 @@ jobs:
         HELM_REGISTRY_PASSWORD: ${{ secrets.HELM_REGISTRY_PASSWORD }}
       run: |
         helm registry login -u $HELM_REGISTRY_USERNAME -p $HELM_REGISTRY_PASSWORD https://artifacthub.io/
+    
+    - name: Initlizing the repo.
+      run: |
+        helm s3 init ${{inputs.s3-bucket}}
 
     - name: Pull Helm Chart from Registry
       run: |
