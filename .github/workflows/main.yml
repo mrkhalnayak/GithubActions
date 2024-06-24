@@ -46,11 +46,11 @@ jobs:
 
     - name: Pull Helm Chart from Registry
       run: |
-        mkdir -p /tmp/helm-chart
-        helm pull https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-chart/
+        mkdir -p /tmp/sonar
+        helm pull https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/sonar
    
     - name: List contents of chart directory
-      run: ls -l /tmp/helm-chart/
+      run: ls -l /tmp/sonar/
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -67,8 +67,8 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
-        helm s3 push /tmp/helm-chart/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-bucket
+        helm s3 push /tmp/sonar/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-bucket
 
     - name: Clean up temporary directory
       run: |
-        rm -rf /tmp/helm-chart/
+        rm -rf /tmp/sonar/
