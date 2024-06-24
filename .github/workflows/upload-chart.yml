@@ -6,11 +6,11 @@ on:
       chart-name:
         description: 'The name of the Helm chart'
         required: true
-        default: 'ingress-nginx'
+        default: 'nginx'
       chart-version:
         description: 'The version of the Helm chart'
         required: true
-        default: '4.10.1'
+        default: '18.1.2'
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
@@ -46,7 +46,7 @@ jobs:
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/nginx/
-        helm fetch https://kubernetes.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/nginx
+        helm fetch oci://registry-1.docker.io/bitnamicharts/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/nginx
    
     - name: List contents of chart directory
       run: ls -l /tmp/nginx
