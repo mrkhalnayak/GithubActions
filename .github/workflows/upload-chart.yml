@@ -1,4 +1,4 @@
-name: Upload Helm Chart
+name: Deploy Helm Chart to S3
 
 on:
   push:
@@ -6,26 +6,45 @@ on:
       - main
 
 jobs:
-  upload:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: v3.7.1
+
+    - name: Install Helm S3 plugin
+      run: |
+        helm plugin install https://github.com/hypnoglow/helm-s3.git
+
+    - name: Login to Helm registry
+      env:
+        HELM_REGISTRY_USERNAME: ${{ secrets.HELM_REGISTRY_USERNAME }}
+        HELM_REGISTRY_PASSWORD: ${{ secrets.HELM_REGISTRY_PASSWORD }}
+      run: |
+        helm registry login -u $HELM_REGISTRY_USERNAME -p $HELM_REGISTRY_PASSWORD <HELM_REGISTRY_URL>
+
+    - name: Pull Helm Chart from Registry
+      run: |
+        helm pull oci://registry-1.docker.io/bitnamicharts/wordpress --version 22.4.12 -d ./charts
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: <ap-southeast-2>
 
-    - name: List Helm chart packages
-      run: ls -l helm-chart/*.tgz
-
-    - name: Upload Helm chart to S3
+    - name: Initialize Helm S3 repo
       run: |
-        for file in helm-chart/*.tgz; do
-          echo "Uploading $file to s3://helm-chart-1997/charts/"
-          aws s3 cp "$file" "s3://helm-chart-1997/charts/"
-        done
+        helm repo add sydney-bucket s3://helm-chart-bucket-sydney/charts
+        helm repo update
+
+    - name: Push Helm Chart to S3 using Helm
+      run: |
+        helm s3 push ./charts/wordpress-22.4.12.tgz sydney-bucket
