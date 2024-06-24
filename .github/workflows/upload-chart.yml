@@ -10,7 +10,7 @@ on:
       chart-version:
         description: 'The version of the Helm chart'
         required: true
-        default: '22.4.12'
+        default: '22.4.13'
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
@@ -45,7 +45,7 @@ jobs:
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/helm-charts
-        helm fetch oci://registry-1.docker.io/bitnamicharts/wordpress --version 22.4.12 -d /tmp/helm-charts
+        helm fetch oci://registry-1.docker.io/bitnamicharts/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-charts
 
     - name: List contents of chart directory
       run: ls -l /tmp/helm-charts
@@ -64,7 +64,7 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm
       run: |
-        helm s3 push /tmp/helm-charts/wordpress-22.4.12.tgz sydney-bucket
+        helm s3 push /tmp/helm-charts/wordpress-22.4.12.tgz $ {{ inputs.s3-bucket}}
 
     - name: Clean up temporary directory
       run: |
