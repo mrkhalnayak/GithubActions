@@ -33,6 +33,9 @@ jobs:
       run: |
         helm plugin install https://github.com/hypnoglow/helm-s3.git
 
+    - name: Set Helm Experimental OCI environment variable
+      run: echo "HELM_EXPERIMENTAL_OCI=1" >> $GITHUB_ENV
+
     - name: Login to Helm registry
       env:
         HELM_REGISTRY_USERNAME: ${{ secrets.HELM_REGISTRY_USERNAME }}
