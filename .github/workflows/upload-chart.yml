@@ -44,7 +44,7 @@ jobs:
 
     - name: Init the repo
       run: |
-        helm s3 init s3://${sydney-bucket}/ingress-nginx/
+        helm s3 init s3://${s3-bucket}/ingress-nginx/
 
     - name: Pull Helm Chart from Registry
       run: |
