@@ -64,7 +64,7 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm
       run: |
-        helm s3 push /tmp/helm-charts/wordpress-22.4.12.tgz ${{ inputs.s3-bucket}}
+        helm s3 push /tmp/helm-charts/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz ${{ inputs.s3-bucket}}
 
     - name: Clean up temporary directory
       run: |
