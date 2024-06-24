@@ -1,4 +1,4 @@
-name: Deploy Helm Chart to S3
+name: Task-2
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ on:
         default: 'my-bucket'
         
 permissions:
-  contents: read, write
+  contents: write
 
 jobs:
   deploy:
