@@ -14,7 +14,7 @@ on:
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
-        default: 'my-s3-repo'
+        default: 'my-s3-bucket'
 
 jobs:
   deploy:
@@ -35,9 +35,6 @@ jobs:
     - name: Install Helm S3 plugin
       run: |
         helm plugin install https://github.com/hypnoglow/helm-s3.git
-        
-    - name: Set Helm Experimental OCI environment variable
-      run: echo "HELM_EXPERIMENTAL_OCI=1" >> $GITHUB_ENV
 
     - name: Login to Helm registry
       env:
@@ -49,7 +46,7 @@ jobs:
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/nginx/
-        helm fetch oci://registry-1.docker.io/bitnamicharts/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/nginx
+        helm fetch https://kubernetes.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/nginx
    
     - name: List contents of chart directory
       run: ls -l /tmp/nginx
@@ -63,12 +60,12 @@ jobs:
 
     - name: Initialize Helm S3 repo
       run: |
-        helm repo add my-s3-repo s3://helm-chart-bucket-sydney/charts/
+        helm repo add my-s3-bucket s3://helm-chart-bucket-sydney/charts/ingress-nginx/
         helm repo update
 
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
-        helm s3 push /tmp/nginx/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-s3-repo
+        helm s3 push /tmp/nginx/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-s3-bucket
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
