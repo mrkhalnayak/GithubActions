@@ -38,7 +38,7 @@ jobs:
         helm fetch oci://registry-1.docker.io/bitnamicharts/wordpress --version 22.4.12 -d /tmp/helm-charts
 
     - name: List contents of chart directory
-      run: ls -l ./chart
+      run: ls -l /tmp/helm-charts
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
