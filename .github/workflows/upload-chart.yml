@@ -43,6 +43,9 @@ jobs:
       run: |
         helm registry login -u $HELM_REGISTRY_USERNAME -p $HELM_REGISTRY_PASSWORD https://artifacthub.io/
 
+    - name: Set Helm Experimental OCI environment variable
+      run: echo "HELM_EXPERIMENTAL_OCI=1" >> $GITHUB_ENV
+
     - name: Pull Helm Chart from Registry
       run: |
         mkdir -p /tmp/nginx/
