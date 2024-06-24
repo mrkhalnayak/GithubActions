@@ -46,11 +46,11 @@ jobs:
 
     - name: Pull Helm Chart from Registry
       run: |
-        mkdir -p /tmp/sonarqube
-        helm fetch https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/sonarqube/
+        mkdir -p /tmp/helm-chart
+        helm fetch https://SonarSource.github.io/${{ inputs.chart-name }} --version ${{ inputs.chart-version }} -d /tmp/helm-chart/
    
     - name: List contents of chart directory
-      run: ls -l /tmp/sonarqube/
+      run: ls -l /tmp/helm-chart/
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -67,8 +67,8 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
-        helm s3 push /tmp/sonarqube/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-bucket
+        helm s3 push /tmp/helm-chart/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-bucket
 
     - name: Clean up temporary directory
       run: |
-        rm -rf /tmp/sonarqube/
+        rm -rf /tmp/helm-chart/
