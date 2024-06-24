@@ -34,7 +34,7 @@ jobs:
 
     - name: Pull Helm Chart from Registry
       run: |
-        helm pull oci://registry-1.docker.io/bitnamicharts/wordpress --version 22.4.12 -d ./chart
+        helm pull oci://registry-1.docker.io/bitnamicharts/wordpress --version 22.4.12 -d /chart
 
     - name: List contents of chart directory
       run: ls -l ./chart
@@ -53,4 +53,4 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm
       run: |
-        helm s3 push ./chart/wordpress-22.4.12.tgz sydney-bucket
+        helm s3 push /chart/wordpress-22.4.12.tgz sydney-bucket
