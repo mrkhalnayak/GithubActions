@@ -66,7 +66,7 @@ jobs:
 
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
-        helm s3 push /tmp/helm-charts/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz ${{ inputs.s3-bucket }} --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-access-key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        helm s3 push /tmp/helm-charts/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz ${{ inputs.s3-bucket }}
 
     - name: Clean up temporary directory
       run: |
