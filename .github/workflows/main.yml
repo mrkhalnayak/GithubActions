@@ -17,7 +17,7 @@ on:
         default: 'my-bucket'
         
 permissions:
-  contents: read|write
+  contents: read, write
 
 jobs:
   deploy:
