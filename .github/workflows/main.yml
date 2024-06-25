@@ -9,8 +9,8 @@ on:
         default: |
           [
            {
-              "chart": "argo-cd",
-              "repository": "https://argoproj.github.io/argo-helm",
+              "name": "argo-cd",
+              "repo": "https://argoproj.github.io/argo-helm",
               "version": "6.9.2"
            }
           ]
@@ -65,7 +65,7 @@ jobs:
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/argo-cd
+          helm s3 push /tmp/helm-charts/argo-cd-6.9.2.tgz s3://helm-chart-bucket-sydney/charts/argo-cd
         done
 
     - name: Clean up temporary directory
