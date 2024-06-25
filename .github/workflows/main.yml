@@ -68,7 +68,3 @@ jobs:
     - name: Push Helm Chart to S3 using Helm with explicit AWS credentials
       run: |
         helm s3 push /tmp/sonar/${{ inputs.chart-name }}-${{ inputs.chart-version }}.tgz my-bucket
-
-    - name: Clean up temporary directory
-      run: |
-        rm -rf /tmp/sonar/
