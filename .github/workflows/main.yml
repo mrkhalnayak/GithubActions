@@ -65,7 +65,7 @@ jobs:
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz $bucket-01/$chart_name
+          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/rancher
         done
 
     - name: Clean up temporary directory
