@@ -17,7 +17,7 @@ on:
       bucket-01:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
-        default: 'helm-chart-bucket-sydney' 
+        default: 'workflow-bucket-01' 
 
 jobs:
   deploy:
@@ -68,10 +68,3 @@ jobs:
           mkdir -p /tmp/helm-charts/
           helm fetch $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
           ls -l /tmp/helm-chart/
-
-          # Pushing the chart to S3
-          helm s3 push --force "${chart_name}-${chart_version}.tgz" "${chart_name}"
-
-    - name: Clean up temporary directory
-      run: |
-        rm -rf /tmp/helm-charts/
