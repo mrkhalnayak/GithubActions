@@ -59,51 +59,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
-      with:
-        version: v3.7.1
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.7.1
 
-    - name: Install Helm S3 plugin
-      run: |
-        helm plugin install https://github.com/hypnoglow/helm-s3.git
+      - name: Install Helm S3 plugin
+        run: |
+          helm plugin install https://github.com/hypnoglow/helm-s3.git
 
-    - name: Set Helm Experimental OCI environment variable
-      run: echo "HELM_EXPERIMENTAL_OCI=1" >> $GITHUB_ENV
+      - name: Set Helm Experimental OCI environment variable
+        run: echo "HELM_EXPERIMENTAL_OCI=1" >> $GITHUB_ENV
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
 
-    - name: Process Helm Charts
-      run: |
-        charts_json='${{ inputs.charts-json }}'
-        echo "$charts_json" | jq -c '.[]' | while read chart; do
-          chart_name=$(echo $chart | jq -r '.chart')
-          chart_version=$(echo $chart | jq -r '.version')
-          repository=$(echo $chart | jq -r '.repository')
+      - name: Process Helm Charts
+        run: |
+          charts_json='${{ inputs.charts-json }}'
+          echo "$charts_json" | jq -c '.[]' | while read chart; do
+            chart_name=$(echo $chart | jq -r '.chart')
+            chart_version=$(echo $chart | jq -r '.version')
+            repository=$(echo $chart | jq -r '.repository')
 
-          #Initalizing the s3 with helm
-          helm s3 init s3://workflow-bucket-01/charts/$chart_name
+            # Adding repository and updating
+            helm repo add $chart_name $repository
+            helm repo update
 
-          # Adding repository and updating
-          helm repo add $chart_name $repository
-          helm repo update
+            # Pulling the chart from the repository
+            mkdir -p /tmp/helm-charts/
+            helm pull $repository/$chart_name --version $chart_version -d /tmp/helm-charts
 
-          # Pulling the chart from the repository
-          mkdir -p /tmp/helm-charts/
-          helm pull $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
+            # Pushing the chart to S3
+            helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz s3://$BUCKET_NAME/helm-charts
+          done
 
-          # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz $S3-BUCKET
-        done
-
-    - name: Clean up temporary directory
-      run: |
-        rm -rf /tmp/helm-charts
+      - name: Clean up temporary directory
+        run: |
+          rm -rf /tmp/helm-charts
