@@ -60,7 +60,7 @@ jobs:
 
           # Pulling the chart from the repository
           mkdir -p /tmp/helm-charts/
-          helm fetch $repository/$chart_name --version $chart_version -d /tmp/helm-charts
+          helm fetch $repository --version $chart_version -d /tmp/helm-charts
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
