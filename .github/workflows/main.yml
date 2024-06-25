@@ -11,7 +11,7 @@ on:
             {
               "chart": "rancher",
               "repository": "https://releases.rancher.com/server-charts/latest",
-              "version": "2.8.3"
+              "version": "2.8.5"
             }
           ]
 
@@ -61,7 +61,7 @@ jobs:
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/rancher
+          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/rancher 
         done
 
     - name: Clean up temporary directory
