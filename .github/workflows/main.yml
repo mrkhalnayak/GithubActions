@@ -1,4 +1,4 @@
-name: Deploy Helm Charts to S3
+name: New-Task
 
 on:
   workflow_dispatch:
@@ -90,7 +90,7 @@ jobs:
           repository=$(echo $chart | jq -r '.repository')
 
           #Initalizing the s3 with helm
-          S3_URI="s3://s3-bucket/helm-charts/$chart_name"
+          S3_URI="s3://$s3-bucket/helm-charts/$chart_name"
           helm s3 init "$S3_URI
 
           # Adding repository and updating
