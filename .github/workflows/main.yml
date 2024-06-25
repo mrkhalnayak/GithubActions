@@ -91,7 +91,7 @@ jobs:
 
             # Adding repository and updating
             helm s3 init s3://workflow-bucket/charts/$chart_name
-            helm repo add $chart_name $repository
+            helm repo add $chart_name $S3-BUCKET/chart/$chart_name
             helm repo update
 
             # Pulling the chart from the repository
@@ -99,7 +99,7 @@ jobs:
             helm pull $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
 
             # Pushing the chart to S3
-            helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz s3://$BUCKET_NAME/helm-charts
+            helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz s3://$S3-BUCKET/chart/$chart_name
           done
 
       - name: Clean up temporary directory
