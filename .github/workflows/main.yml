@@ -14,6 +14,10 @@ on:
               "version": "2.8.5"
             }
           ]
+      bucket-01:
+        description: 'The S3 bucket to push the Helm chart to'
+        required: true
+        default: 's3://helm-chart-bucket-sydney/charts' 
 
 jobs:
   deploy:
@@ -51,16 +55,16 @@ jobs:
 
           # Adding repository and updating
           helm plugin install https://github.com/hypnoglow/helm-s3.git
-          helm repo add rancher s3://helm-chart-bucket-sydney/charts/rancher
+          helm repo add $chart_name s3://helm-chart-bucket-sydney/charts/$chart_name
           helm repo update
 
           # Pulling the chart from the repository
           mkdir -p /tmp/helm-charts/
-          helm fetch $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
+          helm fetch $repository/$chart_name --version $chart_version -d /tmp/helm-charts
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/rancher 
+          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/$chart_name
         done
 
     - name: Clean up temporary directory
