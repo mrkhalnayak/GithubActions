@@ -10,7 +10,7 @@ on:
       chart-version:
         description: 'The version of the Helm chart'
         required: true
-        default: '18.1.2'
+        default: '18.1.1'
       s3-bucket:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
