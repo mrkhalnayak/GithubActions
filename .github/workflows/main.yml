@@ -90,6 +90,7 @@ jobs:
             repository=$(echo $chart | jq -r '.repository')
 
             # Adding repository and updating
+            helm s3 init s3://S3-BUCKET/charts/$chart_name
             helm repo add $chart_name $repository
             helm repo update
 
