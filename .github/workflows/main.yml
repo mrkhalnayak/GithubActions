@@ -60,11 +60,11 @@ jobs:
 
           # Pulling the chart from the repository
           mkdir -p /tmp/helm-charts/
-          helm fetch $repository --version $chart_version -d /tmp/helm-charts
+          helm fetch $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz s3://helm-chart-bucket-sydney/charts/$chart_name
+          helm s3 push /tmp/helm-charts/rancher-2.8.3.tgz $bucket-01/$chart_name
         done
 
     - name: Clean up temporary directory
