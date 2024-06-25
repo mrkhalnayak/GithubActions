@@ -67,4 +67,4 @@ jobs:
           # Pulling the chart from the repository
           mkdir -p /tmp/helm-charts/
           helm fetch $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
-          ls -l /tmp/helm-chart/
+          ls -l /tmp/helm-charts/
