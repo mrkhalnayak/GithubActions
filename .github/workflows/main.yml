@@ -49,7 +49,7 @@ on:
               "version": "1.25.1"
             }
           ]
-      s3-bucket:
+      S3-BUCKET:
         description: 'The S3 bucket to push the Helm chart to'
         required: true
         default: 'workflow-bucket-01'
@@ -101,7 +101,7 @@ jobs:
           helm pull $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz $s3-bucket
+          helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz $S3-BUCKET
         done
 
     - name: Clean up temporary directory
