@@ -55,7 +55,7 @@ jobs:
 
           # Adding repository and updating
           helm plugin install https://github.com/hypnoglow/helm-s3.git
-          helm s3 --force $bucket-01/$chart_name
+          helm s3 init $bucket-01/$chart_name
           helm repo add $chart_name $bucket-01/$chart_name
           helm repo update
 
