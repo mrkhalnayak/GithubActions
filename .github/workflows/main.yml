@@ -103,7 +103,7 @@ jobs:
           ls -l /tmp/helm-chart/
 
           # Pushing the chart to S3
-          helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz my-s3-bucket
+          helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz $chart_name
         done
 
     - name: Clean up temporary directory
