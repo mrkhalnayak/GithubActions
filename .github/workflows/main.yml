@@ -49,10 +49,6 @@ on:
               "version": "1.25.1"
             }
           ]
-      s3-bucket:
-        description: 'The S3 bucket to push the Helm chart to'
-        required: true
-        default: 'my-s3-bucket'
 
 jobs:
   deploy:
