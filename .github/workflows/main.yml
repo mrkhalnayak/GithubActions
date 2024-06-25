@@ -51,8 +51,7 @@ jobs:
 
           # Adding repository and updating
           helm plugin install https://github.com/hypnoglow/helm-s3.git
-          helm s3 --force init s3://helm-chart-bucket-sydney/charts/$chart_name
-          helm repo add $chart_name s3://helm-chart-bucket-sydney/charts/$chart_name
+          helm repo add rancher s3://helm-chart-bucket-sydney/charts/rancher
           helm repo update
 
           # Pulling the chart from the repository
@@ -66,4 +65,4 @@ jobs:
 
     - name: Clean up temporary directory
       run: |
-        rm -rf /tmp/helm-charts
+        rm -rf /tmp/helm-charts/
