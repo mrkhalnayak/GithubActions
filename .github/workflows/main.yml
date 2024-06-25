@@ -95,7 +95,7 @@ jobs:
 
             # Pulling the chart from the repository
             mkdir -p /tmp/helm-charts/
-            helm pull $repository/$chart_name --version $chart_version -d /tmp/helm-charts
+            helm pull $chart_name/$chart_name --version $chart_version -d /tmp/helm-charts
 
             # Pushing the chart to S3
             helm s3 push /tmp/helm-charts/$chart_name-$chart_version.tgz s3://$BUCKET_NAME/helm-charts
